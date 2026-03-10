@@ -1,28 +1,18 @@
 package main
 
-import(
-	"fmt"
-	"bufio"
-	"os"
-)
+import()
 
+type Config struct {
+	previous *string
+	next *string
+}
+//https://pokeapi.co/api/v2/location-area/1
+//
 func main() {
-	commands := getCommands()
-	scanner := bufio.NewScanner(os.Stdin)
-	for {
-		fmt.Print("Pokedex > ")
-		scanner.Scan()
-		input:=scanner.Text()
-		output:=cleanInput(input)
-		cmd, ok := commands[output[0]]
-		if !ok {
-			fmt.Println("Unknown command")
-			continue
-		}
-		err := cmd.callback()
-		if err != nil {
-			fmt.Println(err)
-		}
+	cfg := &Config{
+		previous: nil,
+		next: nil,	
 	}
+	startREPL(cfg)
 }
 
