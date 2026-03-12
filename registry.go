@@ -28,7 +28,7 @@ func getCommands() map[string]cliCommand {
 			callback: commandMap,
 		},
 		"mapb": {
-			name: "map",
+			name: "mapb",
 			description: "Will display the names of the previous 20 locations in the Pokemon world. If you are on the first page it should display 'you are on the first page'",
 			callback: commandMapb,
 		},
@@ -57,7 +57,7 @@ func commandMap(c *Config) error {
 	if c.next != nil {
 		url= *c.next
 	}
-	data := PokeRequest(url)
+	data := c.client.LocationAreaRequest(url)
 	c.previous = data.Previous
 	c.next = data.Next
 	for _,res := range data.Results{
@@ -71,7 +71,7 @@ func commandMapb(c *Config) error {
 		return nil
 	}
 	url:= *c.previous
-	data := PokeRequest(url)
+	data := c.client.LocationAreaRequest(url)
 	c.previous = data.Previous
 	c.next = data.Next
 	for _,res := range data.Results{

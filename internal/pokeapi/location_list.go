@@ -1,4 +1,4 @@
-package main 
+package pokeapi
 
 import(
 	"fmt"
@@ -7,17 +7,24 @@ import(
 	"encoding/json"
 )
 
-type PokeResponse struct {
-	Next     *string `json:"next"`
-	Previous *string `json:"previous"`
-	Results  []struct {
-		Name string `json:"name"`
-	} `json:"results"`
 
-}
-
-func PokeRequest(url string) PokeResponse {
-	res,err := http.Get(url)
+func (c *Client) LocationAreaRequest(url string) PokeResponse {
+	// Check the cache
+	if val, ok := c.cache.Get(url); ok {
+		data := PokeResponse{}
+		err := json.Unmarshal (val, &data)
+		if err != nil {
+			fmt.Println(err)
+			return PokeResponse{}
+		}
+		return data
+	}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		fmt.Printf("Error: %s", err)
+		return PokeResponse{}
+	}
+	res,err := c.httpClient.Do(req)
 	if err != nil {
 		fmt.Printf("Error: %s", err)
 	}
@@ -31,6 +38,7 @@ func PokeRequest(url string) PokeResponse {
 		fmt.Println(err)
 		return PokeResponse{}
 	}
+	c.cache.Add(url,body)
 	data := PokeResponse{}
 	err = json.Unmarshal (body, &data)
 	if err != nil {
