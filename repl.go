@@ -15,12 +15,16 @@ func startREPL(c *Config) error {
 		scanner.Scan()
 		input:=scanner.Text()
 		output:=cleanInput(input)
+		if len(output) == 0 {
+			continue
+		}
 		cmd, ok := commands[output[0]]
 		if !ok {
 			fmt.Println("Unknown command")
 			continue
 		}
-		err := cmd.callback(c)
+		args := output[1:]
+		err := cmd.callback(c, args)
 		if err != nil {
 			fmt.Println(err)
 		}

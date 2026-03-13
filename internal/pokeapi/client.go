@@ -7,13 +7,20 @@ import(
 	"time"
 )
 
-type PokeResponse struct {
+type PokeLocationAreaResponse struct {
 	Next     *string `json:"next"`
 	Previous *string `json:"previous"`
 	Results  []struct {
 		Name string `json:"name"`
 	} `json:"results"`
 
+}
+type PokeExploreResponse struct {
+	PokemonEncounters []struct {
+		Pokemon struct {
+			Name string `json:"name"`
+		} `json:"pokemon"`
+	} `json:"pokemon_encounters"`
 }
 
 type Client struct {
