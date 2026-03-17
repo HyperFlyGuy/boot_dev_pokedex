@@ -1,10 +1,10 @@
 package main
 
 import (
-	"strings"
+	"bufio"
 	"fmt"
 	"os"
-	"bufio"
+	"strings"
 )
 
 func startREPL(c *Config) error {
@@ -13,8 +13,8 @@ func startREPL(c *Config) error {
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
-		input:=scanner.Text()
-		output:=cleanInput(input)
+		input := scanner.Text()
+		output := cleanInput(input)
 		if len(output) == 0 {
 			continue
 		}
@@ -36,5 +36,3 @@ func cleanInput(text string) []string {
 	substrings := strings.Fields(clean_str)
 	return substrings
 }
-
-
